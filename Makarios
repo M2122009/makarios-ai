@@ -1,0 +1,35 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+
+
+export default function Auth() {
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+
+
+const register = async () => {
+const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/auth/register`, { email, password });
+localStorage.setItem('token', res.data.token);
+alert('Registered');
+};
+
+
+const login = async () => {
+const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/auth/login`, { email, password });
+localStorage.setItem('token', res.data.token);
+alert('Logged in');
+};
+
+
+return (
+<div className="p-6">
+<h2 className="text-2xl">Auth</h2>
+<input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" className="border p-2 block mb-2" />
+<input value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" type="password" className="border p-2 block mb-2" />
+<div className="space-x-2">
+<button onClick={register} className="p-2 border">Register</button>
+<button onClick={login} className="p-2 border">Login</button>
+</div>
+</div>
+);
+}

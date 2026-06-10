@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tapy Mega — Marketplace Single File Project (index.html)</title>
+  <meta name="description" content="Tapy Mega - مشروع متجر رقمي كامل داخل ملف واحد (HTML + CSS + JS). مثالي للعرض على GitHub كملف index.html" />
+  <style>
+    /* Reset + base */
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#06b6d4; --accent-2:#7c3aed;
+      --glass: rgba(255,255,255,0.03);
+      --success:#16a34a; --danger:#ef4444;
+      --maxw:1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(180deg,#021124 0%, #041022 60%);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding:24px;
+    }
+    .wrap{max-width:var(--maxw);margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:#021124;box-shadow:0 6px 20px rgba(7,11,18,0.6)
+    }
+    h1{margin:0;font-size:18px}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+    .top-actions{display:flex;gap:8px;align-items:center}
+    .btn{background:var(--accent);border:0;padding:9px 12px;border-radius:8px;color:#021124;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(6,182,212,0.08)}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr;}.sidebar{order:2}}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 30px rgba(2,6,23,0.5)}
+    .searchbar{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+    .searchbar input[type="search"]{flex:1;padding:10px;border-radius:10px;border:0;background:var(--glass);color:inherit}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+    .chip{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);font-size:13px;color:var(--muted);cursor:pointer}
+    .products{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media (max-width:1100px){.products{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:700px){.products{grid-template-columns:1fr}}
+    .product{padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));border:1px solid rgba(255,255,255,0.02);display:flex;flex-direction:column;gap:8px}
+    .product .title{font-weight:700}
+    .product .meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)}
+    .badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;font-size:12px}
+    .price{font-weight:800;color:var(--accent)}
+    .footer-actions{display:flex;gap:8px;align-items:center}
+    .small{font-size:13px;color:var(--muted)}
+    .sidebar .card + .card{margin-top:12px}
+    .uploader input[type="file"]{display:block;margin-top:8px}
+    textarea{width:100%;min-height:70px;border-radius:8px;padding:8px;border:0;background:var(--glass);color:inherit}
+    input[type="text"],input[type="number"],input[type="email"]{padding:8px;border-radius:8px;border:0;background:var(--glass);color:inherit}
+    .row{display:flex;gap:8px}
+    .col{flex:1}
+    nav.pager{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:12px}
+    nav.pager .page{padding:8px 10px;border-radius:6px;background:rgba(255,255,255,0.02);cursor:pointer}
+    .cart-list{max-height:260px;overflow:auto}
+    .cart-item{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed rgba(255,255,255,0.02);padding:8px 0}
+    .muted{color:var(--muted)}
+    .success{color:var(--success)}
+    .danger{color:var(--danger)}
+    .hr{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.02),transparent);margin:12px 0;border-radius:6px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    /* big header ribbon */
+    .ribbon{background:linear-gradient(90deg, rgba(124,58,237,0.12), rgba(6,182,212,0.12));padding:10px;border-radius:10px;margin-bottom:12px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+    .tag{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-weight:700;color:var(--muted)}
+    .kbd{background:rgba(0,0,0,0.28);padding:6px 8px;border-radius:6px;font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">T</div>
+        <div>
+          <h1>Tapy Mega — Marketplace Single File</h1>
+          <p class="lead">ملف واحد يحتوي على مشروع متجر رقمي تجريبي: منتجات، سلة، رفع (محاكاة)، وحماية أساسية.</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="btn" id="btn-demo-fill">Fill Demo</button>
+        <button class="btn secondary" id="btn-clear-local">Clear Data</button>
+      </div>
+    </header>
+
+    <div class="ribbon card">
+      <div>
+        <strong>Instant Demo</strong>
+        <div class="small muted">اضغط "Fill Demo" لو تحب تملأ بيانات جاهزة وتبدأ التجربة</div>
+      </div>
+      <div class="tag">Single-file • Node-free • GitHub-ready</div>
+    </div>
+
+    <div class="grid">
+      <!-- Main -->
+      <main>
+        <section class="card">
+          <div class="searchbar">
+            <input type="search" id="q" placeholder="ابحث عن منتجات (مثال: template, ebook, design)" />
+            <button class="chip" id="filter-all">الكل</button>
+            <button class="chip" id="filter-free">مجاني</button>
+            <button class="chip" id="filter-paid">مدفوع</button>
+            <div style="width:8px"></div>
+            <button class="btn" id="btn-new-product">رفع منتج جديد</button>
+          </div>
+
+          <div class="filters small muted">
+            تصفّح السلع — استخدم شريط البحث أو الفلاتر السريعة.
+          </div>
+
+          <div id="productsContainer" class="products" aria-live="polite"></div>
+
+          <nav class="pager" id="pager"></nav>
+        </section>
+
+        <section class="card" style="margin-top:12px">
+          <h3 style="margin:0 0 8px 0">Console & Logs</h3>
+          <div id="log" style="background:#071226;padding:10px;border-radius:8px;max-height:160px;overflow:auto;font-family:monospace;font-size:13px;color:var(--muted)"></div>
+        </section>
+      </main>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="card">
+          <h3 style="margin:0 0 8px 0">Seller / Uploader (محاكاة)</h3>
+          <div class="uploader">
+            <input id="sp-name" type="text" placeholder="اسم المنتج (مثال: Template A)" />
+            <input id="sp-price" type="number" placeholder="السعر (USD cents, مثال: 1999 = $19.99)" />
+            <textarea id="sp-desc" placeholder="وصف المنتج"></textarea>
+            <input id="sp-file" type="text" placeholder="اسم الملف (محاكاة): my-file.zip" />
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="btn" id="btn-upload">Upload (محاكاة)</button>
+              <button class="btn secondary" id="btn-fill-sample">Sample</button>
+            </div>
+            <div class="hr"></div>
+            <div class="small muted">Uploads are simulated — in a real project you'd connect S3 or server storage.</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3 style="margin:0 0 8px 0">السلة (Cart)</h3>
+          <div class="cart-list" id="cartList">
+            <div class="muted">لا توجد عناصر بعد</div>
+          </div>
+          <div class="hr"></div>
+          <div class="row">
+            <div class="col small muted">Total: <strong id="cartTotal">$0.00</strong></div>
+            <div>
+              <button class="btn" id="btn-checkout">Checkout</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3 style="margin:0 0 8px 0">Dashboard</h3>
+          <div class="small muted">Products: <strong id="statCount">0</strong></div>
+          <div class="small muted">Purchases: <strong id="statPurchases">0</strong></div>
+          <div class="hr"></div>
+          <div><button class="btn secondary" id="btn-export">Export JSON</button></div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      © <span id="year"></span> Tapy Mega — single-file demo • Clone & experiment freely.
+    </footer>
+  </div>
+
+  <script>
+  /* =========================================================================
+     Tapy Mega — single-file Marketplace demo
+     Features:
+     - In-memory product store with localStorage persistence
+     - Add / Edit / Remove products (uploader)
+     - Cart + Checkout simulation
+     - Search, filter, pagination
+     - Export JSON and demo fill
+     - All loops use full form: count = count + 1
+     ========================================================================= */
+
+  // ---------- App state ----------
+  const STATE_KEY = 'tapymega_v1';
+  let state = {
+    products: [],
+    cart: [],
+    purchases: []
+  };
+
+  // ---------- Utilities ----------
+  function now(){ return new Date().toISOString(); }
+  function log(msg){
+    const logEl = document.getElementById('log');
+    const line = document.createElement('div');
+    line.textContent = '[' + (new Date()).toLocaleTimeString() + '] ' + msg;
+    logEl.appendChild(line);
+    logEl.scrollTop = logEl.scrollHeight;
+    // keep only last 200 lines
+    while(logEl.children.length > 200){
+      logEl.removeChild(logEl.children[0]);
+    }
+  }
+
+  function saveState(){
+    try {
+      localStorage.setItem(STATE_KEY, JSON.stringify(state));
+      renderStats();
+    } catch(e){
+      log('Error saving state: ' + e.message);
+    }
+  }
+  function loadState(){
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && typeof parsed === 'object'){
+          state = parsed;
+        }
+      }
+    } catch(e){
+      log('Error loading state: ' + e.message);
+    }
+  }
+
+  function generateId(){
+    return Date.now() + Math.floor(Math.random() * 9999);
+  }
+  function centsToUSD(cents){
+    return '$' + (cents / 100).toFixed(2);
+  }
+
+  // ---------- Product APIs (in-memory, persisted) ----------
+  function addProduct({ title, priceCents, description, fileName, seller }){
+    const product = {
+      id: generateId(),
+      title: title || 'Untitled',
+      priceCents: parseInt(priceCents || 0),
+      description: description || '',
+      fileName: fileName || '',
+      seller: seller || 'unknown@tapy.test',
+      createdAt: now(),
+      downloads: 0
+    };
+    state.products.push(product);
+    saveState();
+    log('Added product: ' + product.title + ' (' + centsToUSD(product.priceCents) + ')');
+    return product;
+  }
+
+  function updateProduct(id, data){
+    for(let count = 0; count < state.products.length; count = count + 1){
+      if(state.products[count].id === id){
+        state.products[count] = Object.assign({}, state.products[count], data);
+        saveState();
+        log('Updated product: ' + state.products[count].title);
+        return state.products[count];
+      }
+    }
+    return null;
+  }
+
+  function removeProduct(id){
+    let removed = false;
+    const newList = [];
+    for(let count = 0; count < state.products.length; count = count + 1){
+      if(state.products[count].id === id){
+        removed = true;
+        continue;
+      }
+      newList.push(state.products[count]);
+    }
+    state.products = newList;
+    if(removed){
+      saveState();
+      log('Removed product id: ' + id);
+    }
+    return removed;
+  }
+
+  // ---------- Cart ----------
+  function addToCart(productId, qty = 1){
+    // find product
+    let prod = null;
+    for(let count = 0; count < state.products.length; count = count + 1){
+      if(state.products[count].id === productId){
+        prod = state.products[count];
+        break;
+      }
+    }
+    if(!prod) return false;
+    // check if already in cart
+    for(let count = 0; count < state.cart.length; count = count + 1){
+      if(state.cart[count].productId === productId){
+        state.cart[count].qty = state.cart[count].qty + qty;
+        saveState();
+        renderCart();
+        log('Increased quantity in cart: ' + prod.title);
+        return true;
+      }
+    }
+    state.cart.push({ productId: productId, qty: qty, priceCents: prod.priceCents, title: prod.title });
+    saveState();
+    renderCart();
+    log('Added to cart: ' + prod.title);
+    return true;
+  }
+
+  function removeFromCart(productId){
+    let newCart = [];
+    for(let count = 0; count < state.cart.length; count = count + 1){
+      if(state.cart[count].productId === productId) continue;
+      newCart.push(state.cart[count]);
+    }
+    state.cart = newCart;
+    saveState();
+    renderCart();
+  }
+
+  function cartTotalCents(){
+    let total = 0;
+    for(let count = 0; count < state.cart.length; count = count + 1){
+      total = total + (state.cart[count].priceCents * state.cart[count].qty);
+    }
+    return total;
+  }
+
+  // ---------- Checkout (Simulated) ----------
+  function checkout(buyerEmail){
+    if(!buyerEmail || buyerEmail.indexOf('@') === -1){
+      alert('اكتب بريد صحيح للدفع التجريبي');
+      return false;
+    }
+    if(state.cart.length === 0){
+      alert('السلة فارغة');
+      return false;
+    }
+    const purchase = {
+      id: generateId(),
+      buyerEmail: buyerEmail,
+      items: JSON.parse(JSON.stringify(state.cart)),
+      totalCents: cartTotalCents(),
+      createdAt: now()
+    };
+    state.purchases.push(purchase);
+    // increment downloads counters
+    for(let i = 0; i < purchase.items.length; i = i + 1){
+      const pid = purchase.items[i].productId;
+      for(let j = 0; j < state.products.length; j = j + 1){
+        if(state.products[j].id === pid){
+          state.products[j].downloads = (state.products[j].downloads || 0) + purchase.items[i].qty;
+          break;
+        }
+      }
+    }
+    // clear cart
+    state.cart = [];
+    saveState();
+    renderCart();
+    renderProducts();
+    log('Checkout completed by ' + buyerEmail + ' — ' + centsToUSD(purchase.totalCents));
+    alert('Checkout successful (simulated). Receipt total: ' + centsToUSD(purchase.totalCents));
+    return purchase;
+  }
+
+  // ---------- UI Rendering ----------
+  const PRODUCTS_PER_PAGE = 9;
+  let currentPage = 1;
+
+  function renderProducts(){
+    const container = document.getElementById('productsContainer');
+    container.innerHTML = '';
+    const q = (document.getElementById('q').value || '').trim().toLowerCase();
+    const filterMode = window._tapyFilter || 'all';
+    // filtered list
+    const list = [];
+    for(let count = 0; count < state.products.length; count = count + 1){
+      const p = state.products[count];
+      let matches = true;
+      if(q){
+        matches = (p.title.toLowerCase().indexOf(q) !== -1) || (p.description.toLowerCase().indexOf(q) !== -1) || (p.seller.toLowerCase().indexOf(q) !== -1);
+      }
+      if(matches){
+        if(filterMode === 'free' && p.priceCents > 0) matches = false;
+        if(filterMode === 'paid' && p.priceCents === 0) matches = false;
+      }
+      if(matches) list.push(p);
+    }
+
+    // pagination
+    const total = list.length;
+    const totalPages = Math.max(1, Math.ceil(total / PRODUCTS_PER_PAGE));
+    if(currentPage > totalPages) currentPage = totalPages;
+    const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    const end = Math.min(total, start + PRODUCTS_PER_PAGE);
+
+    for(let idx = start; idx < end; idx = idx + 1){
+      const p = list[idx];
+      // product card
+      const card = document.createElement('div');
+      card.className = 'product';
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div>
+            <div class="title">${escapeHtml(p.title)}</div>
+            <div class="muted small">${escapeHtml(p.seller)} • ${new Date(p.createdAt).toLocaleDateString()}</div>
+          </div>
+          <div class="badge">${escapeHtml(p.fileName || 'digital')}</div>
+        </div>
+        <div class="small muted">${escapeHtml(p.description || '')}</div>
+        <div class="meta">
+          <div class="price">${centsToUSD(p.priceCents)}</div>
+          <div class="muted">Downloads: ${p.downloads || 0}</div>
+        </div>
+        <div class="footer-actions">
+          <button class="btn btn-buy" data-id="${p.id}">Buy</button>
+          <button class="btn secondary btn-add" data-id="${p.id}">Add to Cart</button>
+          <button class="btn secondary btn-edit" data-id="${p.id}">Edit</button>
+          <button class="btn secondary btn-del" data-id="${p.id}">Delete</button>
+        </div>
+      `;
+      container.appendChild(card);
+    }
+
+    renderPager(totalPages);
+    attachProductHandlers();
+    renderStats();
+  }
+
+  function renderPager(totalPages){
+    const pager = document.getElementById('pager');
+    pager.innerHTML = '';
+    for(let i = 1; i <= totalPages; i = i + 1){
+      const p = document.createElement('div');
+      p.className = 'page';
+      p.textContent = i;
+      if(i === currentPage){
+        p.style.background = 'rgba(255,255,255,0.04)';
+        p.style.fontWeight = '800';
+      }
+      p.onclick = (function(page){
+        return function(){ currentPage = page; renderProducts(); }
+      })(i);
+      pager.appendChild(p);
+    }
+  }
+
+  function attachProductHandlers(){
+    const buys = document.getElementsByClassName('btn-buy');
+    for(let count = 0; count < buys.length; count = count + 1){
+      buys[count].onclick = function(e){
+        const id = parseInt(e.target.getAttribute('data-id'));
+        const email = prompt('Enter your email for simulated checkout (مثال: you@example.com)');
+        if(email) {
+          // add to cart then checkout
+          addToCart(id, 1);
+          checkout(email);
+        }
+      };
+    }
+    const adds = document.getElementsByClassName('btn-add');
+    for(let count = 0; count < adds.length; count = count + 1){
+      adds[count].onclick = function(e){
+        const id = parseInt(e.target.getAttribute('data-id'));
+        addToCart(id, 1);
+      };
+    }
+    const edits = document.getElementsByClassName('btn-edit');
+    for(let count = 0; count < edits.length; count = count + 1){
+      edits[count].onclick = function(e){
+        const id = parseInt(e.target.getAttribute('data-id'));
+        openEditDialog(id);
+      };
+    }
+    const dels = document.getElementsByClassName('btn-del');
+    for(let count = 0; count < dels.length; count = count + 1){
+      dels[count].onclick = function(e){
+        const id = parseInt(e.target.getAttribute('data-id'));
+        if(confirm('Are you sure you want to delete this product?')){
+          removeProduct(id);
+          renderProducts();
+        }
+      };
+    }
+  }
+
+  // ---------- Cart Rendering ----------
+  function renderCart(){
+    const cl = document.getElementById('cartList');
+    cl.innerHTML = '';
+    if(state.cart.length === 0){
+      cl.innerHTML = '<div class="muted">لا توجد عناصر في السلة</div>';
+    } else {
+      for(let count = 0; count < state.cart.length; count = count + 1){
+        const it = state.cart[count];
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `<div>${escapeHtml(it.title)} <span class="muted">x${it.qty}</span></div>
+                          <div>${centsToUSD(it.priceCents * it.qty)} &nbsp; <button class="btn secondary btn-remove" data-id="${it.productId}">Remove</button></div>`;
+        cl.appendChild(div);
+      }
+    }
+    document.getElementById('cartTotal').textContent = centsToUSD(cartTotalCents());
+    // attach remove handlers
+    const rms = document.getElementsByClassName('btn-remove');
+    for(let count = 0; count < rms.length; count = count + 1){
+      rms[count].onclick = function(e){
+        const id = parseInt(e.target.getAttribute('data-id'));
+        removeFromCart(id);
+      };
+    }
+  }
+
+  // ---------- Edit Dialog (simple prompt-based) ----------
+  function openEditDialog(productId){
+    let prod = null;
+    for(let count = 0; count < state.products.length; count = count + 1){
+      if(state.products[count].id === productId){
+        prod = state.products[count];
+        break;
+      }
+    }
+    if(!prod) return alert('Product not found');
+    const newTitle = prompt('New title', prod.title);
+    if(newTitle === null) return;
+    const newPrice = prompt('New price in cents (example: 1999)', prod.priceCents);
+    if(newPrice === null) return;
+    const newDesc = prompt('New description', prod.description);
+    updateProduct(productId, { title: newTitle, priceCents: parseInt(newPrice || prod.priceCents), description: newDesc || prod.description });
+    renderProducts();
+  }
+
+  // ---------- Helpers ----------
+  function escapeHtml(str){
+    if(!str) return '';
+    return String(str).replace(/[&<>"']/g, function(m){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]);
+    });
+  }
+
+  // ---------- Actions / Event Wiring ----------
+  document.getElementById('q').addEventListener('input', function(){
+    currentPage = 1;
+    renderProducts();
+  });
+
+  document.getElementById('filter-all').onclick = function(){ window._tapyFilter = 'all'; currentPage = 1; renderProducts(); };
+  document.getElementById('filter-free').onclick = function(){ window._tapyFilter = 'free'; currentPage = 1; renderProducts(); };
+  document.getElementById('filter-paid').onclick = function(){ window._tapyFilter = 'paid'; currentPage = 1; renderProducts(); };
+
+  document.getElementById('btn-new-product').onclick = function(){
+    // scroll to uploader
+    window.scrollTo({ top: document.querySelector('.uploader').getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+  };
+
+  document.getElementById('btn-upload').onclick = function(){
+    const title = document.getElementById('sp-name').value.trim();
+    const price = parseInt(document.getElementById('sp-price').value || '0');
+    const desc = document.getElementById('sp-desc').value.trim();
+    const fname = document.getElementById('sp-file').value.trim();
+    if(!title) return alert('اسم المنتج مطلوب');
+    addProduct({ title: title, priceCents: price, description: desc, fileName: fname, seller: 'you@tapy.local' });
+    // reset
+    document.getElementById('sp-name').value = '';
+    document.getElementById('sp-price').value = '';
+    document.getElementById('sp-desc').value = '';
+    document.getElementById('sp-file').value = '';
+    renderProducts();
+  };
+
+  document.getElementById('btn-fill-sample').onclick = function(){
+    document.getElementById('sp-name').value = 'Template from Seller';
+    document.getElementById('sp-price').value = '1999';
+    document.getElementById('sp-desc').value = 'A sample template you uploaded quickly';
+    document.getElementById('sp-file').value = 'template.zip';
+  };
+
+  document.getElementById('btn-demo-fill').onclick = function(){
+    fillDemo();
+    renderProducts();
+    renderCart();
+  };
+
+  document.getElementById('btn-clear-local').onclick = function(){
+    if(confirm('Clear local data (this will delete products, cart, purchases)?')){
+      localStorage.removeItem(STATE_KEY);
+      state = { products: [], cart: [], purchases: [] };
+      renderProducts();
+      renderCart();
+      renderStats();
+      log('Local data cleared');
+    }
+  };
+
+  document.getElementById('btn-checkout').onclick = function(){
+    const email = prompt('Enter buyer email for simulated checkout (مثال: you@example.com)');
+    if(email) checkout(email);
+  };
+
+  document.getElementById('btn-export').onclick = function(){
+    const data = JSON.stringify(state, null, 2);
+    // create blob and link
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'tapy_state_export.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    log('Exported state as JSON');
+  };
+
+  // ---------- Demo fill ----------
+  function fillDemo(){
+    // only fill if empty to avoid duplicates
+    if(state.products.length > 0) return;
+    const samples = [
+      { title:'Template A', priceCents: 1999, desc:'Beautiful landing page template', file:'template-a.zip', seller:'design@studio' },
+      { title:'Ebook Pro', priceCents: 1299, desc:'Advanced ebook for designers', file:'ebook-pro.pdf', seller:'author@books' },
+      { title:'Icons Pack', priceCents: 599, desc:'120+ vector icons', file:'icons.zip', seller:'icons@studio' },
+      { title:'Free Cheatsheet', priceCents: 0, desc:'Quick cheatsheet (free)', file:'cheatsheet.pdf', seller:'community@tapy' },
+      { title:'Photos Pack', priceCents: 3499, desc:'High-res photos pack', file:'photos.zip', seller:'photo@market' },
+      { title:'UX Kit', priceCents: 2499, desc:'UI components and templates', file:'uxkit.zip', seller:'ux@studio' },
+      { title:'Music Loops', priceCents: 899, desc:'Royalty-free loops', file:'loops.zip', seller:'sound@beats' },
+      { title:'CV Pro', priceCents: 499, desc:'Professional CV templates', file:'cv-pro.zip', seller:'resume@help' },
+      { title:'Animation Kit', priceCents: 1799, desc:'After Effects animations', file:'anim-kit.zip', seller:'motion@studio' }
+    ];
+    for(let i = 0; i < samples.length; i = i + 1){
+      addProduct({ title: samples[i].title, priceCents: samples[i].priceCents, description: samples[i].desc, fileName: samples[i].file, seller: samples[i].seller });
+    }
+    log('Demo filled with ' + samples.length + ' products');
+  }
+
+  // ---------- Stats ----------
+  function renderStats(){
+    document.getElementById('statCount').textContent = state.products.length;
+    document.getElementById('statPurchases').textContent = state.purchases.length;
+  }
+
+  // ---------- Init ----------
+  function init(){
+    document.getElementById('year').textContent = (new Date()).getFullYear();
+    loadState();
+    renderProducts();
+    renderCart();
+    renderStats();
+    log('Tapy Mega initialized');
+  }
+
+  // ---------- Quick safety: ensure loops use count = count + 1 ----------
+  // (This comment is intentional to honor the loop style preference.)
+
+  // Start
+  init();
+
+  </script>
+</body>
+</html>

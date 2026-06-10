@@ -1,0 +1,55 @@
+// Write the program on the line below.
+console.log("Tapy Lite Loaded — marketplace starter");
+
+// Array to store products
+let products = [];
+
+// Add product function
+function addProduct(name, price) {
+    let product = {
+        id: Date.now(),
+        name: name,
+        price: price
+    };
+    products.push(product);
+    return product;
+}
+
+// List all products
+function listProducts() {
+    for (let count = 0; count < products.length; count = count + 1) {
+        console.log(
+            "ID: " + products[count].id +
+            " | Name: " + products[count].name +
+            " | Price: " + products[count].price
+        );
+    }
+}
+
+// Find product
+function findProduct(id) {
+    for (let count = 0; count < products.length; count = count + 1) {
+        if (products[count].id === id) {
+            return products[count];
+        }
+    }
+    return null;
+}
+
+// Remove product
+function removeProduct(id) {
+    let updated = [];
+    for (let count = 0; count < products.length; count = count + 1) {
+        if (products[count].id !== id) {
+            updated.push(products[count]);
+        }
+    }
+    products = updated;
+}
+
+// Demo
+addProduct("Template A", 25);
+addProduct("Ebook Pro", 15);
+
+console.log("All Products:");
+listProducts();
